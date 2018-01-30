@@ -24,9 +24,10 @@ public class YandexTranslator implements Translatable {
 	private static final String KEY = "?key=trnsl.1.1.20180116T120517Z.f7b1ed2d45f51bba.27cda06b43ebd1c7c98acb18e430e572ae16518f";
 	private static final String LANG = "&lang=";
 
+	private String code;
 
 	@Override
-	public String getString(String string, String lang) {
+	public String getString(String string, String lang) throws TranslatableException {
 
 		try {
 
@@ -42,18 +43,25 @@ public class YandexTranslator implements Translatable {
 			JSONObject json = new JSONObject(jsonString);
 
 			String request = json.optString("text").toString();
-			return formateText(request);
+			code = json.optString("code").toString();
+			code = "401";
+			System.out.println(code);
+			if ("200".equals(code)) {
+				return formateText(request);
+			} else {
+				throw new YandexAPIexception(code);
+			}
 		} catch (
 
 		MalformedURLException e) {
-			e.printStackTrace();
+			throw new TranslatableException("URL exception", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new TranslatableException("IO exception", e);
 		} catch (JSONException e) {
-			e.printStackTrace();
+			throw new TranslatableException("JSON Exception", e);
+		} catch (YandexAPIexception e) {
+			throw new TranslatableException("Yandex Api Exception", e);
 		}
-
-		return "WTF";
 
 	}
 

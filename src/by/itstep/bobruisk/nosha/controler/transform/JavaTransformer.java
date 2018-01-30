@@ -19,7 +19,7 @@ public class JavaTransformer implements Transformable {
 	 */
 	@Override
 	public String toClassName(String string) {
-		return firstWordInUpperCase(allWordInUppreCase(string));
+		return firstWordInUpperCase(allWordInLowerCase(string));
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class JavaTransformer implements Transformable {
 	 */
 	@Override
 	public String toVariable(String string) {
-		return firstWorldInLowerCase(allWordInUppreCase(string));
+		return firstWorldInLowerCase(allWordInLowerCase(string));
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class JavaTransformer implements Transformable {
 	 */
 	@Override
 	public String toComment(String string) {
-		return firstWordInUpperCase(string);
+		return firstWordInUpperCase(string.toLowerCase());
 	}
 
 	/**
@@ -56,11 +56,11 @@ public class JavaTransformer implements Transformable {
 	 * @param string
 	 * @return all word in upper case
 	 */
-	private String allWordInUppreCase(String string) {
+	private String allWordInLowerCase(String string) {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (String word : string.split(" ")) {
 
-			stringBuilder.append(word.substring(0, 1).toUpperCase() + word.substring(1));
+			stringBuilder.append(word.substring(0, 1).toUpperCase() + word.toLowerCase().substring(1));
 		}
 		return stringBuilder.toString();
 

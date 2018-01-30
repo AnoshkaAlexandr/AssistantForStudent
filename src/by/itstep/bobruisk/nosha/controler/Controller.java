@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import by.itstep.bobruisk.nosha.controler.transform.JavaTransformer;
 import by.itstep.bobruisk.nosha.controler.transform.Transformable;
 import by.itstep.bobruisk.nosha.controler.translate.Translatable;
+import by.itstep.bobruisk.nosha.controler.translate.TranslatableException;
 import by.itstep.bobruisk.nosha.controler.translate.YandexTranslator;
 import by.itstep.bobruisk.nosha.controler.wrapping.WrapJava;
 import by.itstep.bobruisk.nosha.controler.wrapping.Wrapping;
@@ -27,16 +28,19 @@ public class Controller implements KeyListener {
 	/**
 	 * @param View
 	 *            view
+	 * @throws ControllerException 
 	 */
-	public Controller(View view) {
+	public Controller(View view) throws ControllerException {
 		this.view = view;
-		initLstener();
+		
+			initLstener();
+		
 	}
 
 	/**
 	 * initialization listeners for component from panel with create variables
 	 */
-	private void initLstener() {
+	private void initLstener ()throws ControllerException {
 
 		view.getFieldForInputVar().addKeyListener(this);
 
@@ -52,11 +56,18 @@ public class Controller implements KeyListener {
 		view.getButtonForClassName().addActionListener(
 				klickEvent -> setClipboard(wrap.wrapClassName(view.getButtonForClassName().getText())));
 
-		view.getButtonTranslate()
-				.addActionListener(klickEvent -> view.getAreaForOutput()
-						.setText(translate
-								.getString(view.getAreaForInput().getText().replaceAll("\n", " @@@@@ "), TO_RUSSIAN)
-								.replaceAll(" @@@@@ ", "\n")));
+		view.getButtonTranslate().addActionListener(klickEvent -> {
+			
+				try {
+					view.getAreaForOutput()
+							.setText(translate
+									.getString(view.getAreaForInput().getText().replaceAll("\n", " @@@@@ "), TO_RUSSIAN)
+									.replaceAll(" @@@@@ ", "\n"));
+				} catch (TranslatableException e) {
+					throw new ControllerException("exception translate text", e);
+				}
+			
+		});
 
 		view.getButtonOpenOtherWindow().addActionListener(klickEvent -> view.openOtherWindow());
 
@@ -70,11 +81,14 @@ public class Controller implements KeyListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER && e.getSource().equals(view.getFieldForInputVar())) {
 			String var = view.getFieldForInputVar().getText();
-			view.getButtonForConstant().setText(toJava.toConstant(translate.getString(var, TO_ENGLISH)));
-			view.getButtonForVar().setText(toJava.toVariable(translate.getString(var, TO_ENGLISH)));
-			view.getButtonForComment().setText(toJava.toComment(translate.getString(var, TO_ENGLISH)));
-			view.getButtonForClassName().setText(toJava.toClassName(translate.getString(var, TO_ENGLISH)));
-
+			try {
+				view.getButtonForConstant().setText(toJava.toConstant(translate.getString(var, TO_ENGLISH)));
+				view.getButtonForVar().setText(toJava.toVariable(translate.getString(var, TO_ENGLISH)));
+				view.getButtonForComment().setText(toJava.toComment(translate.getString(var, TO_ENGLISH)));
+				view.getButtonForClassName().setText(toJava.toClassName(translate.getString(var, TO_ENGLISH)));
+			} catch (TranslatableException ex) {
+				throw new ControllerException("Exception from key pressed", ex);
+			}
 		}
 	}
 

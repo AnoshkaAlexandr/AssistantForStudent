@@ -11,7 +11,8 @@ public interface Translatable {
 	 * @param lang
 	 *            to translate
 	 * @return string translate to language from variable lang
+	 * @throws TranslatableException 
 	 */
-	public String getString(String string, String lang);
+	public String getString(String string, String lang) throws TranslatableException;
 
 }

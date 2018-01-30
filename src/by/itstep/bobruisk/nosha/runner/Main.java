@@ -2,6 +2,7 @@ package by.itstep.bobruisk.nosha.runner;
 
 
 import by.itstep.bobruisk.nosha.controler.Controller;
+import by.itstep.bobruisk.nosha.controler.ControllerException;
 import by.itstep.bobruisk.nosha.controler.MenuController;
 import by.itstep.bobruisk.nosha.runner.initSetting.SetSetting;
 import by.itstep.bobruisk.nosha.view.Menu;
@@ -20,7 +21,12 @@ public class Main {
 		new SetSetting().initDefaultSettings();
 		menu = new Menu();
 		view = new View(menu.initMenuBar());
-		new Controller(view);
+		try {
+			new Controller(view);
+		} catch (ControllerException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e);
+		}
 		new MenuController(menu, view);
 
 	}
