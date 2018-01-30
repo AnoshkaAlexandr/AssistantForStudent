@@ -44,8 +44,7 @@ public class YandexTranslator implements Translatable {
 
 			String request = json.optString("text").toString();
 			code = json.optString("code").toString();
-			code = "401";
-			System.out.println(code);
+
 			if ("200".equals(code)) {
 				return formateText(request);
 			} else {
