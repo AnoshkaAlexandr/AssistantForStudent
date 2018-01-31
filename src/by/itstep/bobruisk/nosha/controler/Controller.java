@@ -28,19 +28,19 @@ public class Controller implements KeyListener {
 	/**
 	 * @param View
 	 *            view
-	 * @throws ControllerException 
+	 * @throws ControllerException
 	 */
 	public Controller(View view) throws ControllerException {
 		this.view = view;
-		
-			initLstener();
-		
+
+		initLstener();
+
 	}
 
 	/**
 	 * initialization listeners for component from panel with create variables
 	 */
-	private void initLstener ()throws ControllerException {
+	private void initLstener() throws ControllerException {
 
 		view.getFieldForInputVar().addKeyListener(this);
 
@@ -57,16 +57,18 @@ public class Controller implements KeyListener {
 				klickEvent -> setClipboard(wrap.wrapClassName(view.getButtonForClassName().getText())));
 
 		view.getButtonTranslate().addActionListener(klickEvent -> {
-			
-				try {
+
+			try {
+				if (!view.getAreaForInput().getText().isEmpty()) {
 					view.getAreaForOutput()
 							.setText(translate
 									.getString(view.getAreaForInput().getText().replaceAll("\n", " @@@@@ "), TO_RUSSIAN)
 									.replaceAll(" @@@@@ ", "\n"));
-				} catch (TranslatableException e) {
-					throw new ControllerException("exception translate text", e);
 				}
-			
+			} catch (TranslatableException e) {
+				throw new ControllerException("exception translate text", e);
+			}
+
 		});
 
 		view.getButtonOpenOtherWindow().addActionListener(klickEvent -> view.openOtherWindow());
@@ -75,11 +77,12 @@ public class Controller implements KeyListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent e) throws ControllerException {
 
 		// create variables after pushing enter button
 
-		if (e.getKeyCode() == KeyEvent.VK_ENTER && e.getSource().equals(view.getFieldForInputVar())) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER && e.getSource().equals(view.getFieldForInputVar())
+				&& !view.getFieldForInputVar().getText().isEmpty()) {
 			String var = view.getFieldForInputVar().getText();
 			try {
 				view.getButtonForConstant().setText(toJava.toConstant(translate.getString(var, TO_ENGLISH)));

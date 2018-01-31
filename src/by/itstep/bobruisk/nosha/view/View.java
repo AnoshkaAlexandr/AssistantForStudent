@@ -51,6 +51,10 @@ public class View extends JFrame {
 	private static final String BUTTON_OPEN_OTHER_WINDOW_TEXT = res.getString("BUTTON_OPEN_OTHER_WINDOW_TEXT");
 	private static final String BUTTON_FOR_CLASS_NAME_TEXT = res.getString("BUTTON_FOR_CLASS_NAME_TEXT");
 	private static final String BUTTON_CLEAR_TEXT = res.getString("BUTTON_CLEAR_TEXT");
+	private static final String TOOL_TIP_FOR_VAR = res.getString("TOOL_TIP_FOR_VAR");
+	private static final String TOOL_TIP_FOR_CONSTANT = res.getString("TOOL_TIP_FOR_CONSTANT");
+	private static final String TOOL_TIP_FOR_COMMENT = res.getString("TOOL_TIP_FOR_COMMENT");
+	private static final String TOOL_TIP_FOR_CLASS_NAME = res.getString("TOOL_TIP_FOR_CLASS_NAME");
 
 	private JTextField fieldForInputVar;
 	private JButton buttonForVar;
@@ -112,9 +116,16 @@ public class View extends JFrame {
 		fieldForInputVar = new JTextField(20);
 
 		buttonForVar = new JButton(BUTTON_FOR_VAR_TEXT);
+		buttonForVar.setToolTipText(TOOL_TIP_FOR_VAR);
+
 		buttonForConstant = new JButton(BUTTON_FOR_CONSTANT_TEXT);
+		buttonForConstant.setToolTipText(TOOL_TIP_FOR_CONSTANT);
+
 		buttonForComment = new JButton(BUTTON_FOR_COMMENT_TEXT);
+		buttonForComment.setToolTipText(TOOL_TIP_FOR_COMMENT);
+
 		buttonForClassName = new JButton(BUTTON_FOR_CLASS_NAME_TEXT);
+		buttonForClassName.setToolTipText(TOOL_TIP_FOR_CLASS_NAME);
 
 		panelToCreate.add(labelForFieldInputVar, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
 				GridBagConstraints.HORIZONTAL, new Insets(2, 2, -10, 2), 0, 0));
